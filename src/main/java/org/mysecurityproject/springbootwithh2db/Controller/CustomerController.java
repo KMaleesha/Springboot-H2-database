@@ -1,6 +1,7 @@
 package org.mysecurityproject.springbootwithh2db.Controller;
 
 import org.mysecurityproject.springbootwithh2db.DTO.CustomerDTO;
+import org.mysecurityproject.springbootwithh2db.Exception.CustomerNotFoundException;
 import org.mysecurityproject.springbootwithh2db.Service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class CustomerController {
         if (customer.isPresent()){
             return customer.get();
         }else {
-            return "Customer not found";
+           throw new CustomerNotFoundException("Customer with ID " + id + " not found");
         }
     }
 
@@ -43,7 +44,7 @@ public class CustomerController {
             customerService.deleteCustomer(id);
             return "Customer deleted";
        }else {
-           return "Customer not found";
+          throw new CustomerNotFoundException("Customer with ID " + id + " not found");
        }
     }
 
@@ -54,7 +55,7 @@ public class CustomerController {
         if (existingCustomer.isPresent()) {
             return customerService.updateCustomer(id, customerDTO);
         } else {
-            return "Customer not found";
+            throw new CustomerNotFoundException("Customer with ID " + id + " not found");
         }
     }
 
